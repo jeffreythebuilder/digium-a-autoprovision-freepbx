@@ -74,7 +74,7 @@ Open the CSV file for editing:
     nano /var/www/html/provisioning/mac_mapping.csv
 
 Add your extension and MAC address mappings:
-Enter each extension and its corresponding MAC address on a new line, separated by a comma. Ensure all MAC addresses are in lowercase.
+Enter each extension and its corresponding MAC address on a new line, separated by a comma. Ensure all MAC addresses are in lowercase. Sample are in mac_mapping.csv.
 
 Step 5: Run the Provisioning Script
 
@@ -88,7 +88,7 @@ Execute the script:
 
     ./var/www/html/provisioning/generate_provisioning.sh
 
-    The script will output a confirmation for each .cfg file it successfully generates. You should now see a new configuration file for each MAC address you listed in mac_mapping.csv.
+The script will output a confirmation for each .cfg file it successfully generates. You should now see a new configuration file for each MAC address you listed in mac_mapping.csv.
 
 Step 6: Enable DHCP Option 66
 
@@ -110,12 +110,6 @@ Finalizing Setup
 
 With all the steps completed, your Digium A-Series phones are now ready for auto-provisioning. Simply plug a phone into the network, and it will:
 
-    Obtain an IP address from your DHCP server.
-
-    Use DHCP Option 66 to find the provisioning server.
-
-    Request its MAC-address-specific configuration file (e.g., 000fd3cbbccd.cfg).
-
-    Download the configuration and automatically register to the assigned extension.
+Obtain an IP address from your DHCP server. Use DHCP Option 66 to find the provisioning server. Request its MAC-address-specific configuration file (e.g., 000fd3cbbccd.cfg). Then, download the configuration and automatically register to the assigned extension.
 
 Important Note: The phone will attempt to grab a new configuration file on every reboot. This means that any manual changes made on the phone's local web GUI will be overwritten after a reboot. To avoid this, you can disable DHCP Option 66 once the phones are provisioned.
