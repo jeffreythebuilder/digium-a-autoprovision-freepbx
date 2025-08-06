@@ -1,7 +1,7 @@
 # digium-a-autoprovision-freepbx
 Digium A-Series Auto-Provisioning for FreePBX/PBXact
 
-This guide provides a comprehensive, step-by-step process for setting up auto-provisioning for Digium A20, A22, and A25 IP phones on a FreePBX or PBXact server. By following these instructions, you'll be able to automatically configure your phones as soon as they're plugged into the network, using DHCP option 66 to point them to your server's configuration files.
+This guide provides a comprehensive, step-by-step process for setting up auto-provisioning for Digium A20, A22, and A25 IP phones on PBXAct16 server. Other freepbx versions need testing. By following these instructions, you'll be able to automatically configure your phones as soon as they're plugged into the network, using DHCP option 66 to point them to your server's configuration files.
 
 Prerequisites
 
@@ -14,13 +14,11 @@ Prerequisites
 Step 1: Download and Prepare Provisioning Files
 
 First, you need to download the necessary scripts and templates from this repository and place them in the correct directory on your server.
-
-    Download the files:
-    Download the repository and unzip it using the following commands:
-    Bash
-
-wget https://github.com/jeffreythebuilder/digium-a-autoprovision-freepbx/archive/refs/heads/main.zip
-unzip main.zip
+Download the files:
+Download the repository and unzip it using the following commands:
+    
+    wget https://github.com/jeffreythebuilder/digium-a-autoprovision-freepbx/archive/refs/heads/main.zip
+    unzip main.zip
 
 Move files to the provisioning directory:
 Move the unzipped folder to the web server's provisioning root directory.
@@ -30,11 +28,10 @@ sudo mv digium-a-autoprovision-freepbx-main /var/www/html/provisioning
 
 (Optional) Clean up:
 If you no longer need the zip file, you can remove it.
-Bash
 
     rm main.zip
 
-The provisioning folder now contains the following key files:
+The provisioning folder now contains the following files:
 
     f0A20hw1.100.cfg: Template for the Digium A20.
 
@@ -52,54 +49,15 @@ Step 2: Customize the Configuration Template
 
 Edit the template.cfg file to match your desired phone settings. This template uses placeholder variables that the script will replace with real values from your PBX.
 
-Below is a sample of the template.cfg file. You can modify settings like the SIP server port or display name as needed.
-Code snippet
-
-<<VOIP CONFIG FILE>>Version:2.0002
-
-<GLOBAL CONFIG MODULE>
-SNTP Server        :{{PBX_IP}}
-</GLOBAL CONFIG MODULE>
-
-<SIP CONFIG MODULE>
---SIP Line List--  :
-SIP1 Phone Number  :{{EXTENSION}}
-SIP1 Display Name  :{{EXTENSION}}
-SIP1 Sip Name      :
-SIP1 Register Addr :{{PBX_IP}}
-SIP1 Register Port :5160
-SIP1 Register User :{{EXTENSION}}
-SIP1 Register Pswd :{{SECRET}}
-SIP1 Register TTL  :3600
-SIP1 Enable Reg    :1
-SIP1 Proxy Addr    :{{PBX_IP}}
-SIP1 Proxy Port    :{{SIP_PORT}}
-SIP1 Proxy User    :{{EXTENSION}}
-SIP1 Proxy Pswd    :{{EXTENSION}}
-</SIP CONFIG MODULE>
-
-<PHONE CONFIG MODULE>
-LCD Title          :{{EXTENSION}}
-Time Display Style :1
-</PHONE CONFIG MODULE>
-
-
-<<END OF FILE>>
-
 Step 3: Configure the Provisioning Script
 
 The generate_provisioning.sh script is what pulls information from your PBX database to create the individual phone configuration files. You need to update it with your specific PBX IP address.
+Open the script for editing:
 
-    Open the script for editing:
-    Bash
-
-nano /var/www/html/provisioning/generate_provisioning.sh
+    nano /var/www/html/provisioning/generate_provisioning.sh
 
 Edit the variables:
 Locate the PBX_IP variable and change its value to your PBX server's IP address. The other variables should be correct by default, but you can double-check them.
-Bash
-
-    #!/bin/bash
 
     TEMPLATE="template.cfg"
     CSV="mac_mapping.csv"
@@ -107,39 +65,26 @@ Bash
     PBX_IP="192.168.0.10"  # <-- **CHANGE THIS TO YOUR PBX IP ADDRESS**
     SIP_PORT="5160"
 
-    # ... rest of the script ...
-
-    Save and exit the editor.
-
 Step 4: Map MAC Addresses to Extensions
 
 The mac_mapping.csv file tells the script which extension to assign to which phone.
 
-    Open the CSV file for editing:
-    Bash
-
-nano /var/www/html/provisioning/mac_mapping.csv
+Open the CSV file for editing:
+    
+    nano /var/www/html/provisioning/mac_mapping.csv
 
 Add your extension and MAC address mappings:
 Enter each extension and its corresponding MAC address on a new line, separated by a comma. Ensure all MAC addresses are in lowercase.
-Code snippet
-
-    extension,mac
-    310,000fd3cbbccd
-    320,000fd3dsdasd
-    100,000fd3csfada
 
 Step 5: Run the Provisioning Script
 
 Now you're ready to run the script that will generate the configuration files for your phones.
 
-    Make the script executable:
-    Bash
+Make the script executable:
 
-chmod +x /var/www/html/provisioning/generate_provisioning.sh
+    chmod +x /var/www/html/provisioning/generate_provisioning.sh
 
 Execute the script:
-Bash
 
     ./var/www/html/provisioning/generate_provisioning.sh
 
@@ -157,7 +102,7 @@ This final step tells your network to point your Digium phones to the provisioni
 
     Click the Manage button to add DHCP Option 66.
 
-    In the URL field, enter your provisioning server's URL. The format should be http://[PBX_IP]/provisioning. For example: http://192.168.0.10/provisioning.
+    In the URL field, enter your provisioning server's URL. The format should be http://[PBX_IP]/provisioning. For example: http://192.168.0.10:2001/provisioning.
 
     Click Save.
 
