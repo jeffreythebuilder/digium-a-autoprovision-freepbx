@@ -5,7 +5,7 @@ This guide provides a comprehensive, step-by-step process for setting up auto-pr
 
 Prerequisites
 
-    A FreePBX or PBXact server (version 16 or newer is recommended).
+    A FreePBX or PBXact server (version 16, other versions require testing).
 
     Administrative access to the server via SSH.
 
