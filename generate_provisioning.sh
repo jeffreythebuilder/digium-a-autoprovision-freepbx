@@ -4,8 +4,8 @@
 TEMPLATE="template.cfg"
 CSV="mac_mapping.csv"
 OUTPUT_DIR="/var/www/html/provisioning"
-PBX_IP="192.168.0.10"
-SIP_PORT="5160"
+PBX_IP="192.168.22.2"
+SIP_PORT="5060"
 
 mkdir -p "$OUTPUT_DIR"
 
