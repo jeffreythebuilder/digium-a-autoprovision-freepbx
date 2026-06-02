@@ -33,7 +33,7 @@ while IFS=, read -r EXT MAC || [[ -n "$EXT" ]]; do
     sed -e "s/{{EXTENSION}}/$EXT/g" \
         -e "s/{{SECRET}}/$SECRET/g" \
         -e "s/{{PBX_IP}}/$PBX_IP/g" \
-        -e "s/{{TCP_UDP}}/$TRANSPORT/g"\
+        -e "s/{{TCP_UDP}}/$TRANSPORT/g" \
         -e "s/{{SIP_PORT}}/$SIP_PORT/g" \
         "$TEMPLATE" > "$OUTPUT_DIR/${MAC_CLEAN}.cfg"
 
