@@ -6,6 +6,7 @@ CSV="mac_mapping.csv"
 OUTPUT_DIR="/var/www/html/provisioning"
 PBX_IP="192.168.22.2"
 SIP_PORT="5060"
+TRANSPORT="TCP/UDP"
 
 mkdir -p "$OUTPUT_DIR"
 
@@ -32,6 +33,7 @@ while IFS=, read -r EXT MAC || [[ -n "$EXT" ]]; do
     sed -e "s/{{EXTENSION}}/$EXT/g" \
         -e "s/{{SECRET}}/$SECRET/g" \
         -e "s/{{PBX_IP}}/$PBX_IP/g" \
+        -e "s/{{TCP_UDP}}/$TRANSPORT/g"\
         -e "s/{{SIP_PORT}}/$SIP_PORT/g" \
         "$TEMPLATE" > "$OUTPUT_DIR/${MAC_CLEAN}.cfg"
 
