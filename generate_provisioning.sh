@@ -6,6 +6,7 @@ CSV="mac_mapping.csv"
 OUTPUT_DIR="/var/www/html/provisioning"
 PBX_IP="192.168.22.2"
 SIP_PORT="5060"
+# UDP = 0 TCP = 1
 TRANSPORT="TCP/UDP"
 
 mkdir -p "$OUTPUT_DIR"
